@@ -9,55 +9,61 @@ let shortcuts = JSON.parse(localStorage.getItem('shortcuts')) || [];
 const grid = document.getElementById('shortcutGrid');
 
 // ==========================
-// 📦 创建弹窗（按钮同一行）
+// 📦 创建【添加书签】弹窗
 // ==========================
-const modal = document.createElement('div');
-modal.className = 'modal';
-
-modal.innerHTML = `
+const addModal = document.createElement('div');
+addModal.className = 'modal';
+addModal.innerHTML = `
     <div class="modal-content">
         <span class="close-modal">×</span>
         <h4>添加快捷网址</h4>
-
         <div class="modal-form">
             <label>网站名称：</label>
             <input type="text" id="siteName" placeholder="百度">
-
             <label>网站地址：</label>
             <input type="url" id="siteUrl" placeholder="如：https://www.baidu.com">
-
             <button id="confirmAddBtn" class="confirm-btn">确认添加</button>
-        </div>
-
-        <!-- 全部4个按钮在同一行！-->
-        <div class="modal-import-export" style="display:flex;gap:8px;margin-top:10px;">
-            <button id="importBtn" style="flex:1;">导入书签</button>
-            <button id="exportBtn" style="flex:1;">导出书签</button>
-            <button id="githubImport" style="flex:1;">GitHub导入</button>
         </div>
     </div>
 `;
-
-document.body.appendChild(modal);
+document.body.appendChild(addModal);
 
 // ==========================
-// 📦 创建右下角添加按钮
+// 📦 创建【设置】弹窗
 // ==========================
-const addBtn = document.createElement('button');
-addBtn.className = 'add-btn';
-addBtn.innerText = '+';
-document.body.appendChild(addBtn);
+const settingModal = document.createElement('div');
+settingModal.className = 'modal';
+settingModal.innerHTML = `
+    <div class="modal-content" style="max-width: 400px;">
+        <span class="close-modal">×</span>
+        <h4>设置中心</h4>
+        <div class="setting-menu">
+            <button id="openAddBookmarkBtn" class="setting-btn">添加书签</button>
+            <button id="importBtn" class="setting-btn">导入书签</button>
+            <button id="exportBtn" class="setting-btn">导出书签</button>
+            <button id="githubImportBtn" class="setting-btn">GitHub导入书签</button>
+            <button id="toggleSearchTabBtn" class="setting-btn">新标签页打开</button>
+        </div>
+    </div>
+`;
+document.body.appendChild(settingModal);
+
+// ==========================
+// 📦 创建右下角设置按钮
+// ==========================
+const settingBtn = document.createElement('button');
+settingBtn.className = 'setting-btn-float';
+settingBtn.innerText = '⚙️';
+document.body.appendChild(settingBtn);
 
 // ==========================
 // 📦 渲染书签
 // ==========================
 function render() {
     grid.innerHTML = '';
-
     shortcuts.forEach((item, index) => {
         const div = document.createElement('div');
         div.className = 'shortcut-item';
-
         div.innerHTML = `
             <div class="shortcut-icon">
                 <img src="https://favicon.im/zh/?url=${new URL(item.url).hostname}&size=64" />
@@ -65,16 +71,13 @@ function render() {
             <div class="shortcut-name">${item.name}</div>
             <button class="delete-btn">×</button>
         `;
-
         div.onclick = () => { window.open(item.url); };
-
         div.querySelector('.delete-btn').onclick = (e) => {
             e.stopPropagation();
             shortcuts.splice(index, 1);
             save();
             render();
         };
-
         grid.appendChild(div);
     });
 }
@@ -87,29 +90,44 @@ function save() {
 }
 
 // ==========================
-// 📦 打开弹窗
+// 📦 弹窗通用关闭逻辑
 // ==========================
-addBtn.onclick = () => {
-    modal.style.display = 'flex';
-};
+function closeAllModals() {
+    addModal.style.display = 'none';
+    settingModal.style.display = 'none';
+}
 
-// ==========================
-// 📦 关闭弹窗
-// ==========================
-modal.querySelector('.close-modal').onclick = () => {
-    modal.style.display = 'none';
-};
-
-modal.addEventListener('click', (e) => {
-    if (e.target === modal) modal.style.display = 'none';
+addModal.querySelector('.close-modal').onclick = closeAllModals;
+addModal.addEventListener('click', (e) => {
+    if (e.target === addModal) closeAllModals();
 });
+
+settingModal.querySelector('.close-modal').onclick = closeAllModals;
+settingModal.addEventListener('click', (e) => {
+    if (e.target === settingModal) closeAllModals();
+});
+
+// ==========================
+// 📦 设置按钮
+// ==========================
+settingBtn.onclick = () => {
+    closeAllModals();
+    settingModal.style.display = 'flex';
+};
+
+settingModal.querySelector('#openAddBookmarkBtn').onclick = () => {
+    settingModal.style.display = 'none';
+    addModal.style.display = 'flex';
+    addModal.querySelector('#siteName').value = '';
+    addModal.querySelector('#siteUrl').value = '';
+};
 
 // ==========================
 // 📦 添加书签
 // ==========================
-modal.querySelector('#confirmAddBtn').onclick = async () => {
-    let name = modal.querySelector('#siteName').value.trim();
-    let url = modal.querySelector('#siteUrl').value.trim();
+addModal.querySelector('#confirmAddBtn').onclick = async () => {
+    let name = addModal.querySelector('#siteName').value.trim();
+    let url = addModal.querySelector('#siteUrl').value.trim();
 
     if (!url) { alert('请输入网址'); return; }
     if (!url.startsWith('http')) url = 'https://' + url;
@@ -118,15 +136,14 @@ modal.querySelector('#confirmAddBtn').onclick = async () => {
     shortcuts.push({ name, url });
     save();
     render();
-    modal.querySelector('#siteName').value = '';
-    modal.querySelector('#siteUrl').value = '';
-    modal.style.display = 'none';
+    closeAllModals();
+    showTip("✅ 书签添加成功", "#43a047");
 };
 
 // ==========================
 // 📦 导出书签
 // ==========================
-modal.querySelector('#exportBtn').onclick = () => {
+settingModal.querySelector('#exportBtn').onclick = () => {
     const data = JSON.stringify(shortcuts, null, 2);
     const blob = new Blob([data], { type: 'application/json' });
     const a = document.createElement('a');
@@ -139,7 +156,7 @@ modal.querySelector('#exportBtn').onclick = () => {
 // ==========================
 // 📦 导入书签
 // ==========================
-modal.querySelector('#importBtn').onclick = () => {
+settingModal.querySelector('#importBtn').onclick = () => {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'application/json';
@@ -166,23 +183,10 @@ modal.querySelector('#importBtn').onclick = () => {
 };
 
 // ==========================
-// 🌟 通用顶部提示
+// 📦 GitHub导入书签
 // ==========================
-function showTip(text, color = "#222") {
-    const tip = document.createElement('div');
-    tip.innerText = text;
-    tip.style.cssText = `
-        position:fixed; top:20px; left:50%; transform:translateX(-50%);
-        background:${color}; color:#fff; padding:8px 12px; border-radius:6px;
-        z-index:9999; font-size:14px;
-    `;
-    document.body.appendChild(tip);
-    setTimeout(() => tip.remove(), 2600);
-}
+settingModal.querySelector('#githubImportBtn').onclick = githubImport;
 
-// ==========================
-// 🌟 从 GitHub 导入（自动拉取）
-// ==========================
 async function githubImport() {
     const isLocal = window.location.protocol === 'file:';
     if (isLocal) {
@@ -202,12 +206,8 @@ async function githubImport() {
             return;
         }
 
-        // ==========================================
-        // 完整统计逻辑
-        // ==========================================
         const totalCloud = cloudData.length;
         const localUrls = new Set(shortcuts.map(i => i.url));
-
         let repeatCount = 0;
         let newCount = 0;
 
@@ -225,9 +225,6 @@ async function githubImport() {
         save();
         render();
 
-        // ==========================================
-        // 最终清晰提示
-        // ==========================================
         if (newCount > 0) {
             showTip(`✅ 找到 ${totalCloud} 个｜重复 ${repeatCount} 个｜新增 ${newCount} 个`, "#43a047");
         } else {
@@ -240,7 +237,29 @@ async function githubImport() {
 }
 
 // ==========================
-// 自动名称
+// 🔍 搜索打开方式 开关（仅操作本地存储）
+// ==========================
+const toggleSearchTabBtn = settingModal.querySelector('#toggleSearchTabBtn');
+updateSearchTabText();
+
+toggleSearchTabBtn.onclick = () => {
+    // 直接读写 localStorage，不定义全局变量！
+    let val = JSON.parse(localStorage.getItem('searchNewTab')) ?? true;
+    val = !val;
+    localStorage.setItem('searchNewTab', val);
+    updateSearchTabText();
+    showTip(val ? "✅ 搜索：新标签页打开" : "✅ 搜索：当前页覆盖", "#43a047");
+};
+
+function updateSearchTabText() {
+    let val = JSON.parse(localStorage.getItem('searchNewTab')) ?? true;
+    toggleSearchTabBtn.innerText = val
+        ? "🔍 搜索：新标签页打开"
+        : "🔍 搜索：当前页覆盖";
+}
+
+// ==========================
+// 🌟 通用工具函数
 // ==========================
 function getAutoName(url) {
     try {
@@ -252,12 +271,17 @@ function getAutoName(url) {
     }
 }
 
-// ==========================
-// 绑定按钮
-// ==========================
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('githubImport').onclick = githubImport;
-});
+function showTip(text, color = "#222") {
+    const tip = document.createElement('div');
+    tip.innerText = text;
+    tip.style.cssText = `
+        position:fixed; top:20px; left:50%; transform:translateX(-50%);
+        background:${color}; color:#fff; padding:8px 12px; border-radius:6px;
+        z-index:9999; font-size:14px;
+    `;
+    document.body.appendChild(tip);
+    setTimeout(() => tip.remove(), 2600);
+}
 
 // ==========================
 // 🚀 初始化

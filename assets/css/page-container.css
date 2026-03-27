@@ -179,34 +179,7 @@
     background-color: #cc0000;
 }
 
-/* ======================== */
-/* 悬浮添加按钮 */
-/* ======================== */
-.add-btn {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
 
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: none;
-    background-color: #19d6e4;
-    color: white;
-    cursor: pointer;
-    font-size: 24px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    z-index: 999;
-}
-
-.add-btn:hover {
-    background-color: #14b8c4;
-}
 
 /* ======================== */
 /* 弹窗内按钮 */
@@ -230,4 +203,54 @@
 
 .modal-import-export button:hover {
     background: #14b8c4;
+}
+/* ======================== */
+/* 悬浮设置按钮（替换原添加按钮） */
+/* ======================== */
+.setting-btn-float {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background-color: #19d6e4;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 999;
+}
+
+.setting-btn-float:hover {
+    background-color: #14b8c4;
+}
+
+/* ======================== */
+/* 设置弹窗菜单样式 */
+/* ======================== */
+.setting-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.setting-btn {
+    padding: 12px;
+    border-radius: 6px;
+    border: none;
+    background: #19d6e4;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.setting-btn:hover {
+    background-color: #14b8c4;
 }
