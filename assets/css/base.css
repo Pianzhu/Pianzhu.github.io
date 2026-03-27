@@ -1,0 +1,31 @@
+/* === 浏览器样式重置 === */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* === 全局基础样式 === */
+body {
+    background-color: #ffffff;
+    height: 100vh;
+    overflow: hidden; /* 防止页面整体滚动 */
+    font-family: "Microsoft YaHei", "微软雅黑"; /* 全局统一字体 */
+    -webkit-tap-highlight-color: transparent; /* 移除移动端点击高亮 */
+}
+
+/* === 通用工具类 === */
+.hide {
+    display: none !important;
+}
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* 移动端触摸优化 */
+button, a, input {
+    -webkit-touch-callout: none; /* 禁止长按菜单 */
+    touch-action: manipulation; /* 禁用双击缩放 */
+}

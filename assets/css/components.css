@@ -1,0 +1,78 @@
+/* === 弹窗容器 === */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 0 15px; /* 移动端左右留边 */
+}
+
+.modal-content {
+    background: white;
+    padding: 16px;
+    border-radius: 12px;
+
+    width: 90%;          /* 小屏更友好 */
+    max-width: 500px;    /* 限制最大宽度 */
+
+    max-height: 75vh;    /* 👈 关键：缩短高度 */
+    overflow-y: auto;
+
+    -webkit-overflow-scrolling: touch;
+}
+
+/* === 关闭按钮 === */
+.close-modal {
+    float: right;
+    font-size: 22px;
+    cursor: pointer;
+    color: #666;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 增大点击区域 */
+}
+
+/* === 弹窗表单 === */
+.modal-form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.modal-form label {
+    color: #333;
+    font-size: 14px;
+}
+
+.modal-form input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 14px;
+}
+
+/* === 确认按钮 === */
+.confirm-btn {
+    padding: 10px;
+    border: 0 none;
+    border-radius: 5px;
+    background-color: #19d6e4;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 16px; /* 增大字号，提升可读性 */
+}
+
+.confirm-btn:hover {
+    background-color: #14b8c4;
+}
