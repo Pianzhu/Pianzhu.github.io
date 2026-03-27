@@ -1,4 +1,6 @@
-// 搜索模块：只读取 localStorage，不冲突
+// ==========================
+// 搜索（核心）
+// ==========================
 document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById("searchInput");
     const searchBtn = document.getElementById("searchBtn");

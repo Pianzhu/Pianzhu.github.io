@@ -1,15 +1,19 @@
 // ==========================
-// 📦 数据存储（核心）
+// 书签核心
+// ==========================
+
+// ==========================
+// 数据存储（核心）
 // ==========================
 let shortcuts = JSON.parse(localStorage.getItem('shortcuts')) || [];
 
 // ==========================
-// 📦 获取DOM
+// 获取DOM
 // ==========================
 const grid = document.getElementById('shortcutGrid');
 
 // ==========================
-// 📦 渲染书签
+// 渲染书签
 // ==========================
 function render() {
     grid.innerHTML = '';
@@ -35,26 +39,27 @@ function render() {
 }
 
 // ==========================
-// 📦 保存数据
+// 保存数据
 // ==========================
 function save() {
     localStorage.setItem('shortcuts', JSON.stringify(shortcuts));
 }
 
 // ==========================
-// 📦 弹窗通用关闭（全局方法）
+// 弹窗通用关闭（全局方法）
 // ==========================
 function closeAllModals() {
     if (window.addModal) window.addModal.style.display = 'none';
     if (window.settingModal) window.settingModal.style.display = 'none';
+    if (window.bookmarkModal) window.bookmarkModal.style.display = 'none';
 }
 
 // ==========================
-// 📦 添加书签弹窗（核心逻辑）
+// 添加书签弹窗（核心逻辑）
 // ==========================
 function bindAddModalEvent() {
     const addModal = window.addModal;
-    addModal.querySelector('#confirmAddBtn').onclick = async () => {
+    addModal.querySelector('#confirmAddBtn').onclick = () => {
         let name = addModal.querySelector('#siteName').value.trim();
         let url = addModal.querySelector('#siteUrl').value.trim();
 
@@ -71,7 +76,7 @@ function bindAddModalEvent() {
 }
 
 // ==========================
-// 🌟 通用工具函数
+// 通用工具函数
 // ==========================
 function getAutoName(url) {
     try {
@@ -96,6 +101,6 @@ function showTip(text, color = "#222") {
 }
 
 // ==========================
-// 🚀 初始化
+// 初始化
 // ==========================
 render();

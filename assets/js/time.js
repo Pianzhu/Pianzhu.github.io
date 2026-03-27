@@ -1,3 +1,6 @@
+// ==========================
+// 时间显示（核心）
+// ==========================
 // 时间显示核心逻辑（修复时区问题，统一显示北京时间）
 document.addEventListener('DOMContentLoaded', () => {
     const timeShowEl = document.querySelector('.time-show');
