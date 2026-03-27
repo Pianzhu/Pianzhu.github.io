@@ -22,10 +22,30 @@ addModal.innerHTML = `
     </div>
 `;
 document.body.appendChild(addModal);
-window.addModal = addModal; // 挂载到全局
+window.addModal = addModal;
 
 // ==========================
-// 📦 创建【设置】弹窗
+// 📦 创建【书签相关】独立弹窗（新增）
+// ==========================
+const bookmarkModal = document.createElement('div');
+bookmarkModal.className = 'modal';
+bookmarkModal.innerHTML = `
+    <div class="modal-content" style="max-width: 400px;">
+        <span class="close-modal">×</span>
+        <h4>书签管理</h4>
+        <div class="setting-menu">
+            <button id="openAddBookmarkBtn" class="setting-btn">➕ 添加书签</button>
+            <button id="importBtn" class="setting-btn">📥 导入书签</button>
+            <button id="exportBtn" class="setting-btn">📤 导出书签</button>
+            <button id="githubImportBtn" class="setting-btn">🐙 GitHub 云端导入</button>
+        </div>
+    </div>
+`;
+document.body.appendChild(bookmarkModal);
+window.bookmarkModal = bookmarkModal;
+
+// ==========================
+// 📦 创建【设置中心】弹窗（只保留通用设置）
 // ==========================
 const settingModal = document.createElement('div');
 settingModal.className = 'modal';
@@ -34,16 +54,13 @@ settingModal.innerHTML = `
         <span class="close-modal">×</span>
         <h4>设置中心</h4>
         <div class="setting-menu">
-            <button id="openAddBookmarkBtn" class="setting-btn">添加书签</button>
-            <button id="importBtn" class="setting-btn">导入书签</button>
-            <button id="exportBtn" class="setting-btn">导出书签</button>
-            <button id="githubImportBtn" class="setting-btn">GitHub导入书签</button>
-            <button id="toggleSearchTabBtn" class="setting-btn">新标签页打开</button>
+            <button id="openBookmarkModalBtn" class="setting-btn">🔖 书签相关</button>
+            <button id="toggleSearchTabBtn" class="setting-btn">🔍 搜索打开方式</button>
         </div>
     </div>
 `;
 document.body.appendChild(settingModal);
-window.settingModal = settingModal; // 挂载到全局
+window.settingModal = settingModal;
 
 // ==========================
 // 📦 创建右下角设置按钮
@@ -54,10 +71,19 @@ settingBtn.innerText = '⚙️';
 document.body.appendChild(settingBtn);
 
 // ==========================
+// 关闭所有弹窗
+// ==========================
+function closeAllModals() {
+    addModal.style.display = 'none';
+    settingModal.style.display = 'none';
+    bookmarkModal.style.display = 'none';
+}
+
+// ==========================
 // 🔗 绑定弹窗关闭事件
 // ==========================
 function bindModalClose() {
-    [addModal, settingModal].forEach(modal => {
+    [addModal, settingModal, bookmarkModal].forEach(modal => {
         modal.querySelector('.close-modal').onclick = closeAllModals;
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeAllModals();
@@ -75,9 +101,15 @@ function bindSettingBtn() {
         settingModal.style.display = 'flex';
     };
 
-    // 设置内打开添加书签
-    settingModal.querySelector('#openAddBookmarkBtn').onclick = () => {
+    // 设置中心 → 打开【书签相关】弹窗
+    settingModal.querySelector('#openBookmarkModalBtn').onclick = () => {
         settingModal.style.display = 'none';
+        bookmarkModal.style.display = 'flex';
+    };
+
+    // 书签管理 → 打开【添加书签】
+    bookmarkModal.querySelector('#openAddBookmarkBtn').onclick = () => {
+        bookmarkModal.style.display = 'none';
         addModal.style.display = 'flex';
         addModal.querySelector('#siteName').value = '';
         addModal.querySelector('#siteUrl').value = '';
@@ -88,7 +120,7 @@ function bindSettingBtn() {
 // 📤 导出书签
 // ==========================
 function bindExport() {
-    settingModal.querySelector('#exportBtn').onclick = () => {
+    bookmarkModal.querySelector('#exportBtn').onclick = () => {
         const data = JSON.stringify(shortcuts, null, 2);
         const blob = new Blob([data], { type: 'application/json' });
         const a = document.createElement('a');
@@ -103,7 +135,7 @@ function bindExport() {
 // 📥 导入书签
 // ==========================
 function bindImport() {
-    settingModal.querySelector('#importBtn').onclick = () => {
+    bookmarkModal.querySelector('#importBtn').onclick = () => {
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = 'application/json';
@@ -183,7 +215,7 @@ async function githubImport() {
 }
 
 function bindGithubImport() {
-    settingModal.querySelector('#githubImportBtn').onclick = githubImport;
+    bookmarkModal.querySelector('#githubImportBtn').onclick = githubImport;
 }
 
 // ==========================
@@ -213,14 +245,14 @@ function bindSearchTabToggle() {
 // 🚀 设置模块初始化
 // ==========================
 function initSettingModule() {
-    bindModalClose();       // 关闭事件
-    bindSettingBtn();       // 设置按钮
-    bindAddModalEvent();    // 添加书签（来自主文件）
-    bindExport();           // 导出
-    bindImport();           // 导入
-    bindGithubImport();     // GitHub同步
-    bindSearchTabToggle();  // 打开方式配置
+    bindModalClose();
+    bindSettingBtn();
+    bindAddModalEvent();
+    bindExport();
+    bindImport();
+    bindGithubImport();
+    bindSearchTabToggle();
 }
 
-// 启动设置模块
+// 启动
 initSettingModule();
