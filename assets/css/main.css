@@ -33,7 +33,7 @@
 /* ======================== */
 .search-input {
     max-width: 700px;
-    width: 100%;
+    width: 90%;
     height: 40px;
     border: 1px solid #19d6e4;
     border-radius: 10px;
@@ -68,7 +68,11 @@
     justify-content: center;
     flex-shrink: 0;
 }
-
-
+#siteName {
+    width: 400px;
+}
+#siteUrl{
+    width: 400px;
+}
 
 

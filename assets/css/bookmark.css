@@ -6,15 +6,9 @@
     width: 100%;
     margin: 20px auto 0;
     padding: 10px;
-
     display: flex;
     flex-wrap: nowrap;
     gap: 10px;
-
-    overflow-x: auto;
-    overflow-y: hidden;
-
-    -webkit-overflow-scrolling: touch;
 }
 
 /* 单个书签 */
@@ -59,6 +53,9 @@
     text-align: center;
     line-height: 1.2;
 }
+.shortcut-item:hover .delete-btn {
+    opacity: 1;
+}
 
 /* 删除按钮 */
 .delete-btn {
@@ -79,10 +76,6 @@
     opacity: 0;
     z-index: 2;
     transition: background-color 0.2s;
-}
-
-.shortcut-item:hover .delete-btn {
-    opacity: 1;
 }
 
 .delete-btn:hover {

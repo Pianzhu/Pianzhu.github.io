@@ -1,33 +1,9 @@
 // ==========================
-// 书签模块 - bookmark.js
-// ==========================
-
-// ==========================
-// 添加书签弹窗
-// ==========================
-const addModal = document.createElement('div');
-addModal.className = 'modal';
-addModal.innerHTML = `
-    <div class="modal-content">
-        <span class="close-modal">×</span>
-        <h4>添加快捷网址</h4>
-        <div class="modal-form">
-            <label>网站名称：</label>
-            <input type="text" id="siteName" placeholder="百度">
-            <label>网站地址：</label>
-            <input type="url" id="siteUrl" placeholder="https://www.baidu.com">
-            <button id="confirmAddBtn" class="confirm-btn">确认添加</button>
-        </div>
-    </div>
-`;
-document.body.appendChild(addModal);
-window.addModal = addModal;
-
-// ==========================
-// 书签管理弹窗
+// 功能1：书签管理弹窗：添加、导入、导出、GitHub 导入
 // ==========================
 const bookmarkModal = document.createElement('div');
 bookmarkModal.className = 'modal';
+bookmarkModal.id = 'bookmarkModal'; 
 bookmarkModal.innerHTML = `
     <div class="modal-content" style="max-width: 400px;">
         <span class="close-modal">×</span>
@@ -42,36 +18,63 @@ bookmarkModal.innerHTML = `
 `;
 document.body.appendChild(bookmarkModal);
 window.bookmarkModal = bookmarkModal;
+// ==========================
+// 功能1.1：添加书签弹窗
+// ==========================
+function initAddBookmarkModal()  {
+    // 创建弹窗
+    const addModal = document.createElement('div');
+    addModal.className = 'modal';
+    addModal.innerHTML = `
+        <div class="modal-content">
+            <span class="close-modal">×</span>
+            <h4>添加快捷网址</h4>
+            <div class="modal-form">
+                <label>网站名称：</label>
+                <input type="text" id="siteName" placeholder="百度">
+                <label>网站地址：</label>
+                <input type="url" id="siteUrl" placeholder="https://www.baidu.com">
+                <button id="confirmAddBtn" class="confirm-btn">确认添加</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(addModal);
 
-// ==========================
-// 打开添加书签
-// ==========================
-function bindAddBookmarkOpen() {
-    bookmarkModal.querySelector('#openAddBookmarkBtn').onclick = () => {
+    //获取需要的元素
+    const bookmarkModal = document.getElementById('bookmarkModal');
+    const openBtn = document.getElementById('openAddBookmarkBtn');
+    const siteNameInput = addModal.querySelector('#siteName');
+    const siteUrlInput = addModal.querySelector('#siteUrl');
+    const closeBtn = addModal.querySelector('.close-modal');
+
+    //安全判断
+    if (!openBtn || !bookmarkModal) return;
+
+    //打开弹窗
+    openBtn.addEventListener('click', () => {
         bookmarkModal.style.display = 'none';
         addModal.style.display = 'flex';
-        addModal.querySelector('#siteName').value = '';
-        addModal.querySelector('#siteUrl').value = '';
-    };
+
+        // 清空输入框
+        siteNameInput.value = '';
+        siteUrlInput.value = '';
+    });
+
+    //关闭弹窗
+    closeBtn.addEventListener('click', () => {
+        addModal.style.display = 'none';
+        bookmarkModal.style.display = 'flex';
+    });
 }
 
 // ==========================
-// 导出书签
+// 页面加载后初始化
 // ==========================
-function bindExport() {
-    bookmarkModal.querySelector('#exportBtn').onclick = () => {
-        const data = JSON.stringify(shortcuts, null, 2);
-        const blob = new Blob([data], { type: 'application/json' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'bookmarks.json';
-        a.click();
-        showTip("导出成功", "#43a047");
-    };
-}
+document.addEventListener('DOMContentLoaded', initAddBookmarkModal);
+
 
 // ==========================
-// 导入书签
+// 功能1.2：导入书签
 // ==========================
 function bindImport() {
     bookmarkModal.querySelector('#importBtn').onclick = () => {
@@ -101,7 +104,22 @@ function bindImport() {
 }
 
 // ==========================
-// GitHub 导入
+// 功能1.3：导出书签
+// ==========================
+function bindExport() {
+    bookmarkModal.querySelector('#exportBtn').onclick = () => {
+        const data = JSON.stringify(shortcuts, null, 2);
+        const blob = new Blob([data], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'bookmarks.json';
+        a.click();
+        showTip("导出成功", "#43a047");
+    };
+}
+
+// ==========================
+// 功能1.4：GitHub 导入
 // ==========================
 async function githubImport() {
     const isLocal = window.location.protocol === 'file:';
@@ -141,10 +159,15 @@ function bindGithubImport() {
 // 初始化书签模块
 // ==========================
 function initBookmarkModule() {
-    bindAddBookmarkOpen();
-    bindExport();
     bindImport();
+    bindExport();
     bindGithubImport();
 }
 
-initBookmarkModule();
+function initBookmarkSystem() {
+    initAddBookmarkModal();     // 添加书签弹窗
+    initBookmarkModule();       // 导入导出等
+    bindOpenBookmarkModalBtn(); // 功能1：打开书签管理器
+}
+
+document.addEventListener('DOMContentLoaded', initBookmarkSystem);
