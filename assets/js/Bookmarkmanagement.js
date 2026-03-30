@@ -174,6 +174,17 @@ githubImportBookmarkBtn.onclick = async () => {
         if (!Array.isArray(cloudData))
             throw new Error("云端数据格式错误：不是数组");
 
+        // ===================== 新增控制台输出 =====================
+        console.log(`云端书签拉取完成，共识别到 ${cloudData.length} 个书签`);
+        console.log('云端书签列表：');
+        
+        cloudData.forEach((item, index) => {
+            if (item.url) {
+                console.log(`  ${index + 1}. ${item.name || '未命名'} → ${item.url}`);
+            }
+        });
+        // ==========================================================
+
         const localUrls = new Set(shortcuts.map(i => i.url));
         let repeat = 0, add = 0;
 
@@ -189,11 +200,11 @@ githubImportBookmarkBtn.onclick = async () => {
 
         localStorage.setItem('shortcuts', JSON.stringify(shortcuts));// 保存书签数据到本地存储
         render();
+        showTip(`新增 ${add} 个｜重复 ${repeat} 个`, "#43a047");
 
-        if (add > 0)
-            showTip(`新增 ${add} 个｜重复 ${repeat} 个`, "#43a047");
-        else
-            showTip(`全部重复，无需更新`, "#0288d1");
+        // ===================== 新增结果日志 =====================
+        console.log(`\n导入完成：新增 ${add} 个 | 重复 ${repeat} 个`);
+        // ========================================================
 
     } catch (err) {
         // 这里会显示真实失败原因！
@@ -260,14 +271,14 @@ function getAutoName(url) {
 let tipTimer = null; // 全局只加这一句
 
 function showTip(text, color = "#2196F3") {
-  const tip = document.getElementById("tip") || document.createElement("div");
-  tip.id = "tip";
-  
-  // 关键：每次显示前先清除上一个定时器
-  if (tipTimer) clearTimeout(tipTimer);
+    const tip = document.getElementById("tip") || document.createElement("div");
+    tip.id = "tip";
 
-  tip.textContent = text;
-  tip.style.cssText = `
+    // 关键：每次显示前先清除上一个定时器
+    if (tipTimer) clearTimeout(tipTimer);
+
+    tip.textContent = text;
+    tip.style.cssText = `
     position: fixed;
     top: 20px;
     left: 50%;
@@ -281,13 +292,13 @@ function showTip(text, color = "#2196F3") {
     opacity: 0.95;
   `;
 
-  if (!tip.parentNode) document.body.appendChild(tip);
+    if (!tip.parentNode) document.body.appendChild(tip);
 
-  // 2秒后消失
-  tipTimer = setTimeout(() => {
-    tip.remove();
-    tipTimer = null;
-  }, 2000);
+    // 2秒后消失
+    tipTimer = setTimeout(() => {
+        tip.remove();
+        tipTimer = null;
+    }, 2000);
 }
 render();
 
