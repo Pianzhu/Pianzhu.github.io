@@ -187,7 +187,7 @@ githubImportBookmarkBtn.onclick = async () => {
             }
         });
 
-        save();
+        localStorage.setItem('shortcuts', JSON.stringify(shortcuts));// 保存书签数据到本地存储
         render();
 
         if (add > 0)
