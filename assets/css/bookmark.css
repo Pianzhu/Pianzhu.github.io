@@ -10,11 +10,6 @@
     display: flex;
     flex-wrap: nowrap;
     gap: 10px;
-
-    overflow-x: auto;
-    overflow-y: hidden;
-
-    -webkit-overflow-scrolling: touch;
 }
 
 /* 单个书签 */

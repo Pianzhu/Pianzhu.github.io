@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn("未找到搜索框");
         return;
     }
+    else {  
+        console.log("搜索框已找到");
+    }
 
     // 绑定事件
     searchBtn.addEventListener('click', doSearch);
