@@ -1,4 +1,6 @@
-/* === 弹窗容器 === */
+/* ========================
+   全局弹窗基础样式
+======================== */
 .modal {
     display: none;
     position: fixed;
@@ -10,20 +12,22 @@
     z-index: 1000;
     justify-content: center;
     align-items: center;
+}
+
+/* 通用弹窗内容（可共用） */
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 420px;
+    max-height: 75vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     box-sizing: border-box;
 }
 
-.modal-content {
-    background: white;
-    padding: 16px;
-    border-radius: 12px;
-    width: 100%;
-    max-width: 500px;    /* 限制最大宽度 */
-    max-height: 75vh;    /*关键：缩短高度 */
-
-}
-
-/* === 关闭按钮 === */
+/* 关闭按钮 */
 .close-modal {
     float: right;
     font-size: 22px;
@@ -33,115 +37,69 @@
     height: 30px;
     display: flex;
     align-items: center;
-    justify-content: center; /* 增大点击区域 */
+    justify-content: center;
 }
 
-/* === 弹窗表单 === */
-.modal-form {
-    margin-top: 20px;
+.close-modal:hover {
+    color: #000;
+}
+
+/* ========================
+   添加书签弹窗表单
+======================== */
+.bookmark-form {
+    margin-top: 16px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
 }
 
-.modal-form label {
+.bookmark-form label {
     color: #333;
     font-size: 14px;
 }
 
-.modal-form input {
-    padding: 10px;
+.bookmark-form input {
+    padding: 10px 12px;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 6px;
     width: 100%;
     font-size: 14px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s;
 }
 
-/* === 确认按钮 === */
-.confirm-btn {
+.bookmark-form input:focus {
+    border-color: #19d6e4;
+}
+
+/* ========================
+   按钮通用样式
+======================== */
+.confirm-btn,
+.setting-btn {
     padding: 10px;
-    border: 0 none;
-    border-radius: 5px;
-    background-color: #19d6e4;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    font-size: 16px; /* 增大字号，提升可读性 */
-}
-
-.confirm-btn:hover {
-    background-color: #14b8c4;
-}
-/* ======================== */
-/* 弹窗内按钮 */
-/* ======================== */
-.modal-import-export {
-    display: flex;
-    gap: 10px;
-    margin-top: 15px;
-    justify-content: center;
-}
-
-.modal-import-export button {
-    padding: 8px 14px;
     border-radius: 6px;
     border: none;
-    background: #19d6e4;
-    color: #fff;
-    font-size: 13px;
-    cursor: pointer;
-}
-
-.modal-import-export button:hover {
-    background: #14b8c4;
-}
-/* ======================== */
-/* 悬浮设置按钮*/
-/* ======================== */
-.setting-btn-float {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: none;
     background-color: #19d6e4;
     color: white;
     cursor: pointer;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0);
-    z-index: 999;
+    font-size: 14px;
+    transition: background-color 0.2s;
 }
 
-.setting-btn-float:hover {
+.confirm-btn:hover,
+.setting-btn:hover {
     background-color: #14b8c4;
 }
 
-/* ======================== */
-/* 设置弹窗菜单样式 */
-/* ======================== */
+/* ========================
+   书签管理菜单
+======================== */
 .setting-menu {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-top: 20px;
-}
-
-.setting-btn {
-    padding: 12px;
-    border-radius: 6px;
-    border: none;
-    background: #19d6e4;
-    color: #fff;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.setting-btn:hover {
-    background-color: #14b8c4;
+    margin-top: 16px;
 }
