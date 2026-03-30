@@ -158,33 +158,50 @@ exportBookmarkBtn.onclick = () => {
 // ==========================
 githubImportBookmarkBtn.onclick = async () => {
     const isLocal = window.location.protocol === 'file:';
-    if (isLocal) {
-        showTip("本地无法拉取云端书签", "#ff9800");
-        return;
-    }
+    if (isLocal)
+        return showTip("本地无法拉取云端书签（file:// 协议限制）", "#ff9800");
+
     showTip("正在从 GitHub 拉取...");
     try {
         const res = await fetch('./bookmarks.json');
-        if (!res.ok) throw new Error("请求失败");
+
+        // HTTP 状态码错误（404/500等）
+        if (!res.ok)
+            throw new Error(`HTTP 错误 ${res.status}：文件不存在或服务器异常`);
+
         const cloudData = await res.json();
-        if (!Array.isArray(cloudData)) {
-            showTip("云端格式错误", "#e53935");
-            return;
-        }
+
+        if (!Array.isArray(cloudData))
+            throw new Error("云端数据格式错误：不是数组");
+
         const localUrls = new Set(shortcuts.map(i => i.url));
         let repeat = 0, add = 0;
+
         cloudData.forEach(item => {
             if (!item.url) return;
             if (localUrls.has(item.url)) repeat++;
-            else { shortcuts.push(item); add++; localUrls.add(item.url); }
+            else {
+                shortcuts.push(item);
+                add++;
+                localUrls.add(item.url);
+            }
         });
-        save(); render();
-        if (add > 0) showTip(`新增 ${add} 个｜重复 ${repeat} 个`, "#43a047");
-        else showTip(`全部重复，无需更新`, "#0288d1");
-    } catch {
-        showTip("拉取失败", "#e53935");
+
+        save();
+        render();
+
+        if (add > 0)
+            showTip(`新增 ${add} 个｜重复 ${repeat} 个`, "#43a047");
+        else
+            showTip(`全部重复，无需更新`, "#0288d1");
+
+    } catch (err) {
+        // 这里会显示真实失败原因！
+        const errMsg = err.message || "未知错误";
+        showTip(`拉取失败：${errMsg}`, "#e53935");
+        console.error("拉取书签详细错误：", err); // 控制台也会打印
     }
-}
+};
 // ==========================
 // 渲染书签
 // ==========================
@@ -240,16 +257,37 @@ function getAutoName(url) {
     }
 }
 //提示框
-function showTip(text, color = "#222") {
-    const tip = document.createElement('div');
-    tip.innerText = text;
-    tip.style.cssText = `
-        position:fixed; top:20px; left:50%; transform:translateX(-50%);
-        background:${color}; color:#fff; padding:8px 12px; border-radius:6px;
-        z-index:9999; font-size:14px;
-    `;
-    document.body.appendChild(tip);
-    setTimeout(() => tip.remove(), 2600);
+let tipTimer = null; // 全局只加这一句
+
+function showTip(text, color = "#2196F3") {
+  const tip = document.getElementById("tip") || document.createElement("div");
+  tip.id = "tip";
+  
+  // 关键：每次显示前先清除上一个定时器
+  if (tipTimer) clearTimeout(tipTimer);
+
+  tip.textContent = text;
+  tip.style.cssText = `
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: ${color};
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    z-index: 9999;
+    opacity: 0.95;
+  `;
+
+  if (!tip.parentNode) document.body.appendChild(tip);
+
+  // 2秒后消失
+  tipTimer = setTimeout(() => {
+    tip.remove();
+    tipTimer = null;
+  }, 2000);
 }
 render();
 
