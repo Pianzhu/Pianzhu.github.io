@@ -1,0 +1,173 @@
+/* ======================== */
+/* 移动端全局适配重置 */
+/* ======================== */
+@media screen and (max-width: 768px) {
+  /* 全局盒模型重置 */
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent; /* 清除移动端点击高亮 */
+  }
+
+  body {
+    margin: 0;
+    padding: 10px;
+    font-size: 14px;
+    overflow-x: hidden; /* 禁止横向滚动 */
+  }
+
+  /* ======================== */
+  /* 时间显示区 - 移动端适配 */
+  /* ======================== */
+  .time-show {
+    width: 100%;
+    height: auto;
+    padding: 20px 0;
+    margin: 0 auto;
+  }
+
+  .time-display {
+    font-size: 36px; /* 移动端缩小字体，适配小屏 */
+    letter-spacing: 1px;
+  }
+
+  .date-display {
+    font-size: 16px;
+  }
+
+  /* ======================== */
+  /* 搜索区域 - 移动端适配 */
+  /* ======================== */
+  .search-input {
+    width: 100%;
+    height: 44px; /* 移动端舒适点击高度 */
+    margin: 10px auto;
+  }
+
+  #searchInput {
+    height: 44px;
+    font-size: 15px;
+    padding: 0 8px;
+  }
+
+  #searchBtn {
+    width: 44px;
+    height: 44px;
+    background-size: 24px 24px; /* 缩小搜索图标 */
+  }
+
+  /* ======================== */
+  /* 书签区域 - 移动端核心优化 */
+  /* ======================== */
+  .shortcut-grid {
+    width: 100%;
+    padding: 10px 0;
+    flex-wrap: wrap; /* 移动端换行显示，不再强制单行 */
+    justify-content: flex-start; /* 左对齐，更符合移动端习惯 */
+    gap: 15px; /* 增大间距，避免误触 */
+  }
+
+  .shortcut-item {
+    width: 70px; /* 增大书签按钮，方便点击 */
+    min-height: 70px;
+    padding: 8px;
+  }
+
+  .shortcut-icon {
+    width: 36px;
+    height: 36px; /* 增大图标，提升辨识度 */
+    margin-bottom: 8px;
+  }
+
+  .shortcut-name {
+    font-size: 13px;
+    max-width: 60px;
+  }
+
+  /* 删除按钮 - 移动端优化 */
+  .delete-btn {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    opacity: 0.8; /* 移动端默认显示删除按钮，降低误触但提升可见性 */
+  }
+
+  /* ======================== */
+  /* 弹窗 - 移动端全屏适配 */
+  /* ======================== */
+  .modal {
+    padding: 10px; /* 弹窗边缘留空，避免贴边 */
+  }
+
+  .modal-content {
+    width: 90%; /* 弹窗宽度适配屏幕 */
+    max-width: 100%;
+    padding: 15px;
+  }
+
+  /* 表单元素 - 移动端点击优化 */
+  .bookmark-form input {
+    height: 44px;
+    font-size: 15px;
+    padding: 0 12px;
+  }
+
+  .confirm-btn,
+  .setting-btn {
+    height: 44px;
+    font-size: 15px;
+  }
+
+  /* ======================== */
+  /* 设置悬浮按钮 - 移动端优化 */
+  /* ======================== */
+  .setting-btn-float {
+    width: 48px;
+    height: 48px; /* 增大悬浮按钮，方便触摸 */
+    right: 15px;
+    bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* 添加阴影，提升层次感 */
+  }
+
+  /* ======================== */
+  /* 提示框 - 移动端适配 */
+  /* ======================== */
+  #tip {
+    width: 90%;
+    text-align: center;
+    padding: 10px;
+    font-size: 15px;
+  }
+}
+
+/* 小屏手机（如iPhone SE）额外优化 */
+@media screen and (max-width: 375px) {
+  .time-display {
+    font-size: 32px;
+  }
+
+  .shortcut-item {
+    width: 65px;
+    min-height: 65px;
+  }
+
+  .shortcut-icon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* 横屏适配 */
+@media screen and (orientation: landscape) and (max-width: 768px) {
+  .time-show {
+    height: 120px;
+    padding: 10px 0;
+  }
+
+  .time-display {
+    font-size: 28px;
+  }
+
+  .shortcut-grid {
+    gap: 10px;
+  }
+}
