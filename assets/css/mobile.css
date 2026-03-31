@@ -130,7 +130,7 @@
     height: 48px;
     right: 15px;
     bottom: 15px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0);
   }
 
   /* ======================== */
