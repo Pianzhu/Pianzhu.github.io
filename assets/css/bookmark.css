@@ -1,28 +1,62 @@
 /* ======================== */
-/* 书签区域 */
+/* 书签区域 - 横向滚动 最终版 */
 /* ======================== */
-.shortcut-grid {
+#shortcutGrid {
     max-width: 700px;
     width: 100%;
-    margin: 20px auto 0;
-    padding: 10px;
+    margin: 25px auto 0;
+    padding: 10px 10px 8px;
     display: flex;
-    flex-wrap: nowrap;
-    gap: 10px;
+    flex-wrap: nowrap;      /* 关键：不换行 */
+    flex-direction: row;     /* 关键：横向从左到右 */
+    gap: 12px;
+    height: 75px;           /* 只需要一行高度 */
+    overflow-x: auto;
+    overflow-y: hidden;
+    align-items: center;
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* 滚动条样式 */
+/* 滚动条美化 - 精致版 */
+#shortcutGrid::-webkit-scrollbar {
+  height: 5px;
+}
+#shortcutGrid::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 99px;
+  margin: 0 10px;
+}
+#shortcutGrid::-webkit-scrollbar-thumb {
+  background: rgba(130, 130, 130, 0.4);
+  border-radius: 99px;
+  transition: all 0.2s ease;
+}
+#shortcutGrid::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 100, 100, 0.6);
+}
+
+/* 火狐浏览器美化 */
+#shortcutGrid {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(130, 130, 130, 0.4) rgba(0, 0, 0, 0.05);
 }
 
 /* 单个书签 */
 .shortcut-item {
+    width: 70px;
+    height: 75px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border-radius: 6px;
     padding: 6px;
-    width: 60px;
-    min-height: 60px;
     position: relative;
-    box-shadow: none;
+    flex-shrink: 0;
+    text-align: center;
+    box-sizing: border-box;
 }
 
 /* 图标 */
@@ -49,12 +83,9 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 70px;
+    width: 100%;
     text-align: center;
     line-height: 1.2;
-}
-.shortcut-item:hover .delete-btn {
-    opacity: 1;
 }
 
 /* 删除按钮 */
@@ -65,19 +96,16 @@
     border: none;
     background-color: #ff4444;
     color: white;
-    cursor: pointer;
     font-size: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     position: absolute;
-    top: 2px;
-    right: 2px;
+    top: 0;
+    right: 0;
     opacity: 0;
-    z-index: 2;
-    transition: background-color 0.2s;
+    z-index: 99;
+    cursor: pointer;
+    /* 让按钮完整露出来，不被裁切 */
+    transform: translate(30%, 40%);
 }
-
-.delete-btn:hover {
-    background-color: #cc0000;
+.shortcut-item:hover .delete-btn {
+    opacity: 1;
 }

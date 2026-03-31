@@ -2,17 +2,20 @@
 /* 移动端全局适配重置 */
 /* ======================== */
 @media screen and (max-width: 768px) {
+
   /* 全局盒模型重置 */
   * {
     box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent; /* 清除移动端点击高亮 */
+    -webkit-tap-highlight-color: transparent;
+    /* 清除移动端点击高亮 */
   }
 
   body {
     margin: 0;
     padding: 10px;
     font-size: 14px;
-    overflow-x: hidden; /* 禁止横向滚动 */
+    overflow-x: hidden;
+    /* 禁止横向滚动 */
   }
 
   /* ======================== */
@@ -21,7 +24,8 @@
   .time-show {
     width: 100%;
     height: auto;
-    padding: 80px 0 30px; /* 这里改了！顶部加大间距，位置下移 */
+    padding: 80px 0 30px;
+    /* 这里改了！顶部加大间距，位置下移 */
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -46,7 +50,8 @@
   .search-input {
     width: 100%;
     height: 44px;
-    margin: 20px auto 30px; /* 加大上下间距，整体更舒服 */
+    margin: 20px auto 30px;
+    /* 加大上下间距，整体更舒服 */
   }
 
   #searchInput {
@@ -89,13 +94,18 @@
     max-width: 60px;
   }
 
-  /* 删除按钮 */
-  .delete-btn {
-    width: 20px;
-    height: 20px;
-    font-size: 12px;
-    opacity: 0.8;
-  }
+/* 手机端：删除按钮默认隐藏，长按显示 */
+.delete-btn {
+  display: none !important;
+}
+.shortcut-item.show-delete .delete-btn {
+  display: block !important;
+}
+/* 可选：长按状态轻微变暗 */
+.shortcut-item.show-delete {
+  opacity: 0.8;
+  background: rgba(0,0,0,0.05);
+}
 
   /* ======================== */
   /* 弹窗 */
